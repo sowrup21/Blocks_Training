@@ -1,0 +1,10 @@
+rules_repo=https://github.com/SELISEdigitalplatforms/blocks-skills.git
+rules_ref=main
+rules_commit=78562249b3f0604e93f8523270c26d996bd3bc11
+skills_repo=https://github.com/SELISEdigitalplatforms/blocks-cli.git
+skills_ref=main
+skills_commit=90484026c7afec7fdb414ddfb4a7889970ebda27
+skills=blocks-bootstrap blocks-data-gateway-configuration blocks-data-gateway-crud blocks-data-storage blocks-frontend-local-https blocks-iam-access-control blocks-iam-account blocks-iam-mfa blocks-iam-organizations blocks-iam-sso-oidc-configuration blocks-iam-sso-oidc-implementation blocks-iam-users blocks-localization-configuration blocks-localization-implementation blocks-mail blocks-notification blocks-notifier blocks-release-deployment blocks-storage-configuration 
+agents=gemini-cli claude-code 
+skill_fronts=.claude/skills 
+instruction_fronts=CLAUDE.md GEMINI.md 

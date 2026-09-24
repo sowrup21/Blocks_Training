@@ -1,0 +1,91 @@
+{
+  "app": {
+    "name": "Clockwise",
+    "tagline": "Attendance Tracker"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "attendance": "Attendance",
+    "profile": "Profile",
+    "signOut": "Sign Out"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "close": "Close",
+    "back": "Back",
+    "language": "Language",
+    "english": "English",
+    "german": "German",
+    "bengali": "Bengali"
+  },
+  "dashboard": {
+    "greetingMorning": "Good morning",
+    "greetingAfternoon": "Good afternoon",
+    "greetingEvening": "Good evening",
+    "readyToWork": "Ready to start your workday?",
+    "overview": "Overview",
+    "todaysAttendance": "Today's Attendance"
+  },
+  "clock": {
+    "ready": "Ready to start your workday?",
+    "clockInPrompt": "Clock in to start tracking your working hours for today.",
+    "clockIn": "Clock In",
+    "currentlyWorking": "You're currently clocked in",
+    "clockOut": "Clock Out",
+    "shiftCompleted": "Workday Completed",
+    "completedPrompt": "You have completed your shift for today. Great job!",
+    "clockedInAt": "Clocked In At",
+    "clockedOutAt": "Clocked Out At",
+    "timeWorked": "Time Worked",
+    "shiftHours": "Shift: 9:00 AM - 6:00 PM (1h lunch break included)"
+  },
+  "status": {
+    "present": "Present",
+    "late": "Late",
+    "absent": "Absent",
+    "incomplete": "Incomplete",
+    "weekend": "Weekend"
+  },
+  "summary": {
+    "title": "Monthly Attendance Summary",
+    "presentDays": "Present Days",
+    "absentDays": "Absent Days",
+    "lateDays": "Late Days",
+    "attendanceRate": "Attendance Rate",
+    "workingDays": "working days"
+  },
+  "attendance": {
+    "title": "Attendance Records",
+    "subtitle": "Track and review your monthly attendance history",
+    "calendar": "Calendar",
+    "table": "Table",
+    "date": "Date",
+    "clockIn": "Clock In",
+    "clockOut": "Clock Out",
+    "workingHours": "Working Hours",
+    "status": "Status",
+    "noRecords": "No attendance records found for this period."
+  },
+  "profile": {
+    "title": "Employee Profile",
+    "name": "Full Name",
+    "email": "Email Address",
+    "employeeId": "Employee ID",
+    "department": "Department",
+    "position": "Position",
+    "logout": "Log Out"
+  },
+  "auth": {
+    "signInTitle": "Sign in to your account",
+    "signInWithBlocks": "Sign In with Blocks",
+    "infoBlocks": "Clockwise is connected to SELISE Blocks IAM. Sign in with your registered credentials.",
+    "forgotPassword": "Forgot your password?",
+    "activatePrompt": "Have an invitation link? Activate account",
+    "poweredBy": "Powered by SELISE Blocks IAM",
+    "resetPassword": "Reset Password",
+    "sendResetLink": "Send Reset Link",
+    "resetLinkSent": "If an account exists with this email, a reset link has been sent. Check your inbox!"
+  }
+}

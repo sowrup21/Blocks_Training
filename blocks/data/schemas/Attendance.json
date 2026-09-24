@@ -1,0 +1,49 @@
+{
+  "schemaName": "Attendance",
+  "collectionName": "blx_Attendances",
+  "schemaType": 1,
+  "fields": [
+    {
+      "name": "employeeId",
+      "type": "String",
+      "isArray": false,
+      "isRequired": true,
+      "description": "User ID of the employee"
+    },
+    {
+      "name": "date",
+      "type": "String",
+      "isArray": false,
+      "isRequired": true,
+      "description": "Date of attendance in YYYY-MM-DD format"
+    },
+    {
+      "name": "clockIn",
+      "type": "String",
+      "isArray": false,
+      "isRequired": false,
+      "description": "Clock-in ISO timestamp"
+    },
+    {
+      "name": "clockOut",
+      "type": "String",
+      "isArray": false,
+      "isRequired": false,
+      "description": "Clock-out ISO timestamp"
+    },
+    {
+      "name": "workingMinutes",
+      "type": "Number",
+      "isArray": false,
+      "isRequired": false,
+      "description": "Calculated working minutes for the shift"
+    },
+    {
+      "name": "status",
+      "type": "String",
+      "isArray": false,
+      "isRequired": true,
+      "description": "Attendance status: present, late, absent, incomplete"
+    }
+  ]
+}

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clockwise — Knowledge Base & Chatbot Operational Manual</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #eff6ff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border-color: #e2e8f0;
+      --bg-card: #f8fafc;
+      --success: #16a34a;
+      --success-bg: #dcfce7;
+      --warning: #d97706;
+      --warning-bg: #fef3c7;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --info: #0284c7;
+      --info-bg: #e0f2fe;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text-main);
+      background-color: #ffffff;
+      line-height: 1.6;
+      font-size: 13.5px;
+      padding: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        max-width: 100%;
+        font-size: 12.5px;
+      }
+      @page {
+        margin: 16mm 14mm 16mm 14mm;
+        size: A4;
+      }
+      .no-print {
+        display: none;
+      }
+      .page-break {
+        page-break-before: always;
+        break-before: page;
+      }
+      .avoid-break {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      h2, h3 {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+    }
+
+    /* Header & Cover */
+    .header-container {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 24px;
+      margin-bottom: 30px;
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      background: var(--bg-card);
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      font-size: 12px;
+    }
+
+    .meta-item strong {
+      color: var(--text-main);
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 2px;
+    }
+
+    /* Headings */
+    h2 {
+      font-size: 19px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 32px;
+      margin-bottom: 14px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #334155;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 10px;
+      color: #334155;
+    }
+
+    ul, ol {
+      margin-bottom: 14px;
+      padding-left: 22px;
+    }
+
+    li {
+      margin-bottom: 5px;
+      color: #334155;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 20px 0;
+      font-size: 12.5px;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 9px 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .badge-present { background-color: var(--success-bg); color: var(--success); }
+    .badge-late { background-color: var(--warning-bg); color: var(--warning); }
+    .badge-incomplete { background-color: var(--info-bg); color: var(--info); }
+    .badge-absent { background-color: var(--danger-bg); color: var(--danger); }
+    .badge-weekend { background-color: #f1f5f9; color: #64748b; }
+
+    /* Callout Boxes */
+    .callout {
+      background-color: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 4px;
+    }
+
+    /* Q&A Cards */
+    .qa-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .qa-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .qa-card:nth-child(odd) {
+      background: #fafafa;
+    }
+
+    .qa-q {
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 13.5px;
+    }
+
+    .qa-q-num {
+      background: #e2e8f0;
+      color: #334155;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+    }
+
+    .qa-a {
+      color: #475569;
+      font-size: 13px;
+      padding-left: 2px;
+      line-height: 1.55;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 1px 5px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .tech-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .tech-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px 14px;
+    }
+
+    .tech-item strong {
+      display: block;
+      color: #1e293b;
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+
+    .footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      color: #94a3b8;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover & Header -->
+  <div class="header-container">
+    <div class="brand-badge">Clockwise Documentation</div>
+    <h1>Clockwise — Employee Attendance Management System</h1>
+    <div class="subtitle">Official Knowledge Base & Chatbot Operational Reference Manual</div>
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <strong>Document Version</strong>
+        1.0.0 (Production)
+      </div>
+      <div class="meta-item">
+        <strong>Target Purpose</strong>
+        AI Chatbot Retrieval / LLM System Prompt & FAQ
+      </div>
+      <div class="meta-item">
+        <strong>Authentication</strong>
+        SELISE Blocks Hosted OIDC & IAM
+      </div>
+      <div class="meta-item">
+        <strong>Supported Locales</strong>
+        English (en-US), German (de-DE), Bengali (bn-BD)
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 1 -->
+  <h2>1. Executive Summary & Product Overview</h2>
+  <p>
+    <strong>Clockwise</strong> is a dedicated employee attendance tracking web application built to automate daily shift recording, eliminate paper timesheets, and enforce accurate attendance compliance with real-time status reporting.
+  </p>
+  <p>
+    Employees authenticate securely, click to begin their workday, click when their shift ends, and Clockwise automatically calculates exact shift durations, net worked minutes, and policy compliance (Present, Late, Incomplete, Absent) without manual data entry.
+  </p>
+
+  <h3>Key Features:</h3>
+  <ul>
+    <li><strong>One-Click Shift Clocking:</strong> Intuitive 3-state clock card: <em>Not Clocked In</em> &rarr; <em>Working (with real-time counter)</em> &rarr; <em>Shift Completed</em>.</li>
+    <li><strong>Automated Compliance Engine:</strong> Automatically classifies each shift into <strong>Present</strong>, <strong>Late</strong>, <strong>Incomplete</strong>, or <strong>Absent</strong> based on schedule criteria.</li>
+    <li><strong>Weekend Protection:</strong> Saturdays and Sundays are permanently designated as rest days and are never penalized as absences.</li>
+    <li><strong>Dual Attendance Views:</strong> Monthly calendar with color-coded status badges plus a detailed chronological tabular audit log.</li>
+    <li><strong>SELISE Blocks IAM Security:</strong> Hosted OIDC login, token exchange, email-based user invitations, account activation, and password resets.</li>
+    <li><strong>Native Multilingual Localization:</strong> Live client translations in English, German, and Bengali, including locale-specific date and time formatting.</li>
+  </ul>
+
+  <!-- Section 2 -->
+  <div class="page-break"></div>
+  <h2>2. Authentication & Account Management (Blocks IAM)</h2>
+  <p>
+    Clockwise integrates directly with the SELISE Blocks Identity & Access Management (IAM) infrastructure. No unencrypted credentials or sensitive authentication secrets are stored on the client.
+  </p>
+
+  <h3>2.1 Sign-In Flow</h3>
+  <ol>
+    <li>Navigate to the Clockwise login screen (<code>/login</code>).</li>
+    <li>Select preferred language if desired (English, Deutsch, বাংলা) in the top-right corner.</li>
+    <li>Click <strong>"Sign In with Blocks"</strong>.</li>
+    <li>The user is redirected to the secure, hosted SELISE Blocks IAM portal.</li>
+    <li>Enter registered corporate email and password.</li>
+    <li>Upon authentication, Blocks sets a secure <code>httpOnly</code> cookie and redirects back to <code>/login/callback</code>.</li>
+    <li>Clockwise validates the session token and navigates directly to the employee <strong>Dashboard</strong>.</li>
+  </ol>
+
+  <h3>2.2 New Employee Invitation & Activation</h3>
+  <p>When an administrator provisions a new employee record:</p>
+  <ol>
+    <li>Blocks dispatches an automated invitation email to the employee's corporate address.</li>
+    <li>The email contains a one-time activation link: <code>/oidc/activate/?code=&lt;ACTIVATION_CODE&gt;</code>.</li>
+    <li>Clicking the link navigates to the Clockwise <strong>Activate Account</strong> interface.</li>
+    <li>The employee specifies and confirms a secure password (minimum 8 characters).</li>
+    <li>Clicking <strong>"Set Password & Activate"</strong> finalizes account provisioning on Blocks IAM.</li>
+    <li>The employee is immediately eligible to sign in.</li>
+  </ol>
+
+  <h3>2.3 Password Recovery ("Forgot Password")</h3>
+  <ol>
+    <li>On the Clockwise login screen (<code>/login</code>), click <strong>"Forgot your password?"</strong>.</li>
+    <li>Provide the registered email address and click <strong>"Send Reset Link"</strong>.</li>
+    <li>Blocks dispatches a password recovery email containing a unique reset token.</li>
+    <li>The user opens the link pointing to <code>/resetpassword?code=&lt;RESET_CODE&gt;</code>.</li>
+    <li>The user provides and confirms the new password and clicks <strong>"Save New Password"</strong>.</li>
+  </ol>
+
+  <!-- Section 3 -->
+  <h2>3. Attendance Rules & Status Determination Engine</h2>
+  <p>
+    Clockwise eliminates administrative ambiguity by evaluating attendance rules through a deterministic calculation engine.
+  </p>
+
+  <h3>3.1 Standard Schedule Policy</h3>
+  <ul>
+    <li><strong>Standard Working Days:</strong> Monday through Friday.</li>
+    <li><strong>Rest Days (Weekends):</strong> Saturday and Sunday (never penalized).</li>
+    <li><strong>Official Shift Window:</strong> 9:00 AM – 6:00 PM (9 total elapsed hours including 1 hour break = <strong>8 required working hours / 480 minutes</strong>).</li>
+  </ul>
+
+  <h3>3.2 Status Determination Matrix</h3>
+  <div class="avoid-break">
+    <table>
+      <thead>
+        <tr>
+          <th>Attendance Status</th>
+          <th>Badge</th>
+          <th>Condition</th>
+          <th>Rule Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Present</strong></td>
+          <td><span class="badge badge-present">Present</span></td>
+          <td>On-Time & Full Shift</td>
+          <td>Clocked in on or before <strong>9:15 AM</strong> AND total worked duration is &ge; <strong>8 hours (480 mins)</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Late</strong></td>
+          <td><span class="badge badge-late">Late</span></td>
+          <td>Late Clock-In</td>
+          <td>Clocked in at <strong>9:16 AM or later</strong>, regardless of total shift duration.</td>
+        </tr>
+        <tr>
+          <td><strong>Incomplete</strong></td>
+          <td><span class="badge badge-incomplete">Incomplete</span></td>
+          <td>Short Duration / No Out</td>
+          <td>Clocked in before 9:15 AM, but either forgot to clock out OR worked less than 8 hours total.</td>
+        </tr>
+        <tr>
+          <td><strong>Absent</strong></td>
+          <td><span class="badge badge-absent">Absent</span></td>
+          <td>No Attendance</td>
+          <td>A standard business weekday (Mon–Fri) concluded with zero clock-in records.</td>
+        </tr>
+        <tr>
+          <td><strong>Weekend</strong></td>
+          <td><span class="badge badge-weekend">Weekend</span></td>
+          <td>Scheduled Rest Days</td>
+          <td>Saturdays and Sundays. Automatically excluded from working day totals and absence metrics.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="callout-title">Official Grace Period Policy</div>
+      The standard workday begins at 9:00 AM. Clockwise includes an official <strong>15-minute grace window</strong>. A clock-in recorded between 9:00 AM and 9:15 AM is considered strictly on-time. Any clock-in at 9:16 AM or later is automatically flagged as <strong>Late</strong>.
+    </div>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="page-break"></div>
+  <h2>4. User Interface & Feature Walkthrough</h2>
+
+  <h3>4.1 Dashboard (<code>/dashboard</code>)</h3>
+  <p>The operational cockpit for daily attendance management:</p>
+  <ul>
+    <li><strong>Contextual Greeting & Clock:</strong> Real-time greeting with employee name, live digital clock, and localized date.</li>
+    <li><strong>Interactive Clock Card:</strong>
+      <ul>
+        <li><em>State 1 (Not Clocked In):</em> Displays current time and the prominent primary <strong>"CLOCK IN"</strong> button.</li>
+        <li><em>State 2 (Working):</em> Displays start time, live animated pulse badge, active elapsed duration counter, and the red <strong>"CLOCK OUT"</strong> button.</li>
+        <li><em>State 3 (Shift Complete):</em> Confirmation card displaying clock-in time, clock-out time, and total calculated duration.</li>
+      </ul>
+    </li>
+    <li><strong>Monthly Metric Cards:</strong> Real-time counts of Present Days, Absent Days, Late Days, and overall Attendance Rate %.</li>
+  </ul>
+
+  <h3>4.2 Attendance History (<code>/attendance</code>)</h3>
+  <ul>
+    <li><strong>Month Navigator:</strong> Move smoothly between past, current, and future calendar months.</li>
+    <li><strong>Interactive Calendar Grid:</strong> Monthly calendar displaying weekday columns, weekend indicators, and color-coded status badges on worked dates. Clicking any date card displays a detailed summary card.</li>
+    <li><strong>Chronological Data Table:</strong> Formatted table listing Date, Clock In, Clock Out, Total Working Duration, and Status badges.</li>
+  </ul>
+
+  <h3>4.3 Employee Profile (<code>/profile</code>)</h3>
+  <p>Displays verified account identity details:</p>
+  <ul>
+    <li>Employee Full Name & Corporate Email.</li>
+    <li>Employee ID & Departmental Assignment.</li>
+    <li>Secure <strong>"Sign Out"</strong> button to invalidate session credentials and clear local state.</li>
+  </ul>
+
+  <!-- Section 5 -->
+  <h2>5. Multilingual Localization (i18n)</h2>
+  <p>
+    Clockwise is powered by the SELISE Blocks Localization service, delivering native translation and formatting:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Language</th>
+        <th>Culture Code</th>
+        <th>Native Designation</th>
+        <th>Supported Interface Surfaces</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>English</strong></td>
+        <td><code>en-US</code></td>
+        <td>English (Default)</td>
+        <td>Login Screen, Navigation Sidebar, Dashboard, Profile, Modals</td>
+      </tr>
+      <tr>
+        <td><strong>German</strong></td>
+        <td><code>de-DE</code></td>
+        <td>Deutsch</td>
+        <td>Login Screen, Navigation Sidebar, Dashboard, Profile, Modals</td>
+      </tr>
+      <tr>
+        <td><strong>Bengali</strong></td>
+        <td><code>bn-BD</code></td>
+        <td>বাংলা</td>
+        <td>Login Screen, Navigation Sidebar, Dashboard, Profile, Modals</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ul>
+    <li><strong>Language Switcher Locations:</strong> Top-right pill on the Login screen; bottom dropdown in the Desktop Sidebar; mobile header dropdown.</li>
+    <li><strong>Localized Dates & Time:</strong> Month names, weekdays, and clock formats automatically conform to the active locale's regional conventions.</li>
+    <li><strong>Zero-Cache Sync:</strong> Dictionaries are pulled dynamically from Blocks Localization Cloud.</li>
+  </ul>
+
+  <!-- Section 6: Chatbot Bank -->
+  <div class="page-break"></div>
+  <h2>6. Chatbot Knowledge Base & Q&A Retrieval Bank</h2>
+  <p>
+    <em>The following 17 structured Q&A pairs are designed for direct ingestion into RAG knowledge bases, LLM system prompts, or customer support chatbot vector stores:</em>
+  </p>
+
+  <div class="qa-container">
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q01</span> What is Clockwise?</div>
+      <div class="qa-a">Clockwise is a modern web application designed for employee attendance tracking. It enables staff to clock in when starting work and clock out when finishing, while automatically calculating attendance compliance, working durations, and monthly summaries.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q02</span> How do I sign in to Clockwise?</div>
+      <div class="qa-a">Navigate to the Clockwise login page and click "Sign In with Blocks". You will be redirected to the secure SELISE Blocks IAM portal. Enter your corporate email and password. Once verified, you will be redirected back to your Clockwise dashboard.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q03</span> How do I clock in at the start of my shift?</div>
+      <div class="qa-a">Log in to Clockwise and go to your Dashboard. In the "Today's Attendance" card, click the blue "CLOCK IN" button. The system immediately captures your timestamp and starts tracking your active shift duration.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q04</span> How do I clock out at the end of my day?</div>
+      <div class="qa-a">Navigate to your Dashboard where your Clock Card indicates you are currently working. Click the red "CLOCK OUT" button. Clockwise records your end timestamp, calculates your total shift duration, and finalizes your attendance status for the day.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q05</span> What time do I need to clock in to be marked "Present"?</div>
+      <div class="qa-a">The standard workday starts at 9:00 AM. Clockwise includes a 15-minute grace period, meaning you must clock in on or before 9:15 AM AND complete at least 8 hours (480 minutes) of working duration to be classified as "Present".</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q06</span> What happens if I clock in after 9:15 AM?</div>
+      <div class="qa-a">Any clock-in recorded at 9:16 AM or later is automatically flagged as "Late", regardless of how many total hours you work during that day.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q07</span> Why does my attendance status display "Incomplete"?</div>
+      <div class="qa-a">A shift status displays "Incomplete" if you clocked in but failed to clock out, or if you clocked out with less than 8 hours total duration (provided you clocked in before 9:15 AM).</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q08</span> Are Saturdays and Sundays counted as absences?</div>
+      <div class="qa-a">No. Saturdays and Sundays are recognized non-working weekend days. They are never counted as working business days and are never marked as absences.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q09</span> How is the Attendance Rate percentage calculated?</div>
+      <div class="qa-a">The Attendance Rate is calculated as: (Total Present Days / Total Elapsed Business Working Days in the Month) &times; 100. Weekends and future dates are excluded from the denominator.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q10</span> How do I view my previous attendance records?</div>
+      <div class="qa-a">Click "Attendance" in the navigation sidebar. You can inspect your records through an interactive monthly calendar with color-coded status badges, or view a chronological table showing date, clock in, clock out, and total duration.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q11</span> How do I activate a new Clockwise account?</div>
+      <div class="qa-a">When an administrator invites you, Blocks sends an activation email with a secure link. Click the link to open the Clockwise Account Activation page, set your password (at least 8 characters), and click "Set Password & Activate". You can then log in immediately.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q12</span> What should I do if I forgot my password?</div>
+      <div class="qa-a">On the login screen, click "Forgot your password?". Enter your registered email address and click "Send Reset Link". Open the link sent to your inbox, choose a new password, and click "Save New Password".</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q13</span> Can I use Clockwise in German or Bengali?</div>
+      <div class="qa-a">Yes. Clockwise is fully localized in English, German (Deutsch), and Bengali (বাংলা). Switch languages anytime using the selector on the login screen, sidebar, or mobile menu.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q14</span> Can I clock in multiple times in a single day?</div>
+      <div class="qa-a">Clockwise records one complete shift per day (clock in when your day starts, clock out when your day concludes). Once you have clocked out, the daily shift is complete.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q15</span> How do I log out of Clockwise?</div>
+      <div class="qa-a">Click the "Log Out" button at the bottom of the navigation sidebar, or navigate to your Profile page (/profile) and click the red "Log Out" button to end your session.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q16</span> What do the calendar status colors mean?</div>
+      <div class="qa-a">
+        <strong>Green:</strong> Present (Clocked in &le; 9:15 AM and worked &ge; 8 hours)<br>
+        <strong>Amber:</strong> Late (Clocked in after 9:15 AM)<br>
+        <strong>Red:</strong> Absent (Business day with no attendance recorded)<br>
+        <strong>Blue:</strong> Incomplete (Missing clock-out or under 8 hours worked)<br>
+        <strong>Gray:</strong> Weekend rest day
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-q"><span class="qa-q-num">Q17</span> Can I access Clockwise on my mobile phone?</div>
+      <div class="qa-a">Yes. Clockwise features a fully responsive mobile layout. You can access all clocking functions, view calendar summaries, and manage your profile from any modern smartphone browser.</div>
+    </div>
+  </div>
+
+  <!-- Section 7 -->
+  <div class="page-break"></div>
+  <h2>7. Technical Reference for System Administrators</h2>
+  <div class="tech-list">
+    <div class="tech-item">
+      <strong>Front-End Framework</strong>
+      React 19, TypeScript, Vite, Tailwind CSS v4, Lucide React
+    </div>
+    <div class="tech-item">
+      <strong>SELISE Blocks API Gateway</strong>
+      <code>https://blocksapi.slsblx.com</code>
+    </div>
+    <div class="tech-item">
+      <strong>OIDC Client ID</strong>
+      <code>64e8b4af-5d58-4bf4-bd63-bdbcdfbde222</code> (PKCE)
+    </div>
+    <div class="tech-item">
+      <strong>Tenant Key</strong>
+      <code>D70a2fe710f9249d39ecb14bb69a35695</code>
+    </div>
+    <div class="tech-item">
+      <strong>Localization Module Key</strong>
+      <code>clockwise</code> (ID: <code>1765100a-039d-472c-92c9-51e8d9284693</code>)
+    </div>
+    <div class="tech-item">
+      <strong>Local HTTPS Origin</strong>
+      <code>https://dbggjs-elzzi.slsblx.com:5173</code>
+    </div>
+  </div>
+
+  <div class="footer">
+    Clockwise Operational Knowledge Base &bull; Generated for Chatbot RAG Ingestion &bull; SELISE Blocks Platform Ecosystem
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+{
+  "app": {
+    "name": "Clockwise",
+    "tagline": "Anwesenheits-Tracker"
+  },
+  "nav": {
+    "dashboard": "Übersicht",
+    "attendance": "Anwesenheit",
+    "profile": "Profil",
+    "signOut": "Abmelden"
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "loading": "Wird geladen...",
+    "close": "Schließen",
+    "back": "Zurück",
+    "language": "Sprache",
+    "english": "Englisch",
+    "german": "Deutsch",
+    "bengali": "Bengalisch"
+  },
+  "dashboard": {
+    "greetingMorning": "Guten Morgen",
+    "greetingAfternoon": "Guten Tag",
+    "greetingEvening": "Guten Abend",
+    "readyToWork": "Bereit für den Arbeitstag?",
+    "overview": "Überblick",
+    "todaysAttendance": "Heutige Anwesenheit"
+  },
+  "clock": {
+    "ready": "Bereit für den Arbeitstag?",
+    "clockInPrompt": "Stempeln Sie ein, um Ihre heutigen Arbeitsstunden zu erfassen.",
+    "clockIn": "Einstempeln",
+    "currentlyWorking": "Sie sind derzeit eingestempelt",
+    "clockOut": "Ausstempeln",
+    "shiftCompleted": "Arbeitstag beendet",
+    "completedPrompt": "Sie haben Ihre heutige Schicht beendet. Gute Arbeit!",
+    "clockedInAt": "Eingestempelt um",
+    "clockedOutAt": "Ausgestempelt um",
+    "timeWorked": "Arbeitszeit",
+    "shiftHours": "Schicht: 9:00 - 18:00 Uhr (inkl. 1 Std. Mittagspause)"
+  },
+  "status": {
+    "present": "Anwesend",
+    "late": "Verspätet",
+    "absent": "Abwesend",
+    "incomplete": "Unvollständig",
+    "weekend": "Wochenende"
+  },
+  "summary": {
+    "title": "Monatliche Anwesenheitsübersicht",
+    "presentDays": "Anwesende Tage",
+    "absentDays": "Abwesende Tage",
+    "lateDays": "Verspätete Tage",
+    "attendanceRate": "Anwesenheitsquote",
+    "workingDays": "Arbeitstage"
+  },
+  "attendance": {
+    "title": "Anwesenheitsaufzeichnungen",
+    "subtitle": "Verfolgen und überprüfen Sie Ihren monatlichen Verlauf",
+    "calendar": "Kalender",
+    "table": "Tabelle",
+    "date": "Datum",
+    "clockIn": "Kommen",
+    "clockOut": "Gehen",
+    "workingHours": "Arbeitsstunden",
+    "status": "Status",
+    "noRecords": "Keine Anwesenheitsaufzeichnungen für diesen Zeitraum gefunden."
+  },
+  "profile": {
+    "title": "Mitarbeiterprofil",
+    "name": "Vollständiger Name",
+    "email": "E-Mail-Adresse",
+    "employeeId": "Mitarbeiter-ID",
+    "department": "Abteilung",
+    "position": "Position",
+    "logout": "Abmelden"
+  },
+  "auth": {
+    "signInTitle": "In Ihrem Konto anmelden",
+    "signInWithBlocks": "Mit Blocks anmelden",
+    "infoBlocks": "Clockwise ist mit SELISE Blocks IAM verbunden. Melden Sie sich mit Ihren Zugangsdaten an.",
+    "forgotPassword": "Passwort vergessen?",
+    "activatePrompt": "Haben Sie einen Einladungslink? Konto aktivieren",
+    "poweredBy": "Bereitgestellt von SELISE Blocks IAM",
+    "resetPassword": "Passwort zurücksetzen",
+    "sendResetLink": "Link senden",
+    "resetLinkSent": "Falls ein Konto mit dieser E-Mail existiert, wurde ein Link gesendet. Prüfen Sie Ihren Posteingang!"
+  }
+}
