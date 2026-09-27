@@ -8,6 +8,7 @@ export const blocksClient = createBlocksClient({
   fetch: (input, init) => {
     return fetch(input, {
       ...init,
+      credentials: 'include',
       cache: 'no-cache',
     });
   },

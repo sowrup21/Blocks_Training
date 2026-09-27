@@ -7,83 +7,133 @@ import {
   type ReactNode,
 } from 'react';
 import type { AttendanceRecord } from '../types';
-import { mockAttendanceRecords } from '../lib/mock-data';
+import { useAuth } from './auth-context';
 import {
   determineStatus,
   calculateWorkingMinutes,
   formatDateKey,
 } from '../lib/attendance';
+import {
+  fetchAttendanceRecords,
+  createAttendanceRecord,
+  updateAttendanceRecord,
+} from '../lib/attendance-api';
 
 interface AttendanceContextType {
   records: AttendanceRecord[];
   todayRecord: AttendanceRecord | null;
-  clockIn: () => void;
-  clockOut: () => void;
+  isLoading: boolean;
+  clockIn: () => Promise<void>;
+  clockOut: () => Promise<void>;
   getRecordsForMonth: (year: number, month: number) => AttendanceRecord[];
+  refreshRecords: () => Promise<void>;
 }
 
 const AttendanceContext = createContext<AttendanceContextType | undefined>(
   undefined
 );
 
-const STORAGE_KEY = 'clockwise_attendance';
+const STORAGE_KEY = 'clockwise_attendance_cache';
 
 function todayStr() {
   return formatDateKey(new Date());
 }
 
 export function AttendanceProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
   const [records, setRecords] = useState<AttendanceRecord[]>(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
+    const cached = localStorage.getItem(STORAGE_KEY);
+    if (cached) {
       try {
-        const parsed: AttendanceRecord[] = JSON.parse(stored);
-        const mockDates = new Set(mockAttendanceRecords.map((r) => r.date));
-        const storedOnly = parsed.filter((r) => !mockDates.has(r.date));
-        return [...mockAttendanceRecords, ...storedOnly];
+        return JSON.parse(cached);
       } catch {
-        return [...mockAttendanceRecords];
+        return [];
       }
     }
-    return [...mockAttendanceRecords];
+    return [];
   });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const employeeId = user?.id || user?.email || 'default-user';
+
+  // Fetch real attendance records from Blocks Data Gateway
+  const refreshRecords = useCallback(async () => {
+    if (!user) return;
+    setIsLoading(true);
+    try {
+      const liveRecords = await fetchAttendanceRecords(employeeId);
+      setRecords(liveRecords);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(liveRecords));
+    } catch (err) {
+      console.error('Failed to sync records from Blocks:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user, employeeId]);
 
   useEffect(() => {
-    const nonMock = records.filter(
-      (r) => !mockAttendanceRecords.some((m) => m.id === r.id)
-    );
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(nonMock));
-  }, [records]);
+    if (user) {
+      refreshRecords();
+    }
+  }, [user, refreshRecords]);
 
   const todayRecord = records.find((r) => r.date === todayStr()) ?? null;
 
-  const clockIn = useCallback(() => {
+  const clockIn = useCallback(async () => {
     const now = new Date();
     const date = todayStr();
 
     if (records.some((r) => r.date === date)) return;
 
-    const newRecord: AttendanceRecord = {
-      id: `att-${date}`,
-      employeeId: 'emp-001',
+    // Optimistic record
+    const tempId = `temp-${Date.now()}`;
+    const optimisticRecord: AttendanceRecord = {
+      id: tempId,
+      employeeId,
       date,
       clockIn: now.toISOString(),
       clockOut: null,
       workingMinutes: 0,
       status: 'incomplete',
     };
-    setRecords((prev) => [...prev, newRecord]);
-  }, [records]);
 
-  const clockOut = useCallback(() => {
+    setRecords((prev) => [...prev, optimisticRecord]);
+
+    try {
+      const created = await createAttendanceRecord({
+        employeeId,
+        date,
+        clockIn: now.toISOString(),
+        clockOut: null,
+        workingMinutes: 0,
+        status: 'incomplete',
+      });
+
+      if (created) {
+        setRecords((prev) =>
+          prev.map((r) => (r.id === tempId ? created : r))
+        );
+      }
+    } catch (err) {
+      console.error('Failed to save clock-in to Blocks:', err);
+      // Keep optimistic record locally so user is not blocked
+    }
+  }, [employeeId, records]);
+
+  const clockOut = useCallback(async () => {
     const date = todayStr();
+    const current = records.find((r) => r.date === date && !r.clockOut);
+    if (!current) return;
+
+    const now = new Date();
+    const clockInDate = current.clockIn ? new Date(current.clockIn) : null;
+    const workingMinutes = calculateWorkingMinutes(clockInDate, now);
+    const status = determineStatus(clockInDate, now);
+
+    // Optimistic update
     setRecords((prev) =>
       prev.map((r) => {
         if (r.date !== date || r.clockOut) return r;
-        const now = new Date();
-        const clockInDate = r.clockIn ? new Date(r.clockIn) : null;
-        const workingMinutes = calculateWorkingMinutes(clockInDate, now);
-        const status = determineStatus(clockInDate, now);
         return {
           ...r,
           clockOut: now.toISOString(),
@@ -92,7 +142,19 @@ export function AttendanceProvider({ children }: { children: ReactNode }) {
         };
       })
     );
-  }, []);
+
+    try {
+      if (current.id && !current.id.startsWith('temp-')) {
+        await updateAttendanceRecord(current.id, {
+          clockOut: now.toISOString(),
+          workingMinutes,
+          status,
+        });
+      }
+    } catch (err) {
+      console.error('Failed to save clock-out to Blocks:', err);
+    }
+  }, [records]);
 
   const getRecordsForMonth = useCallback(
     (year: number, month: number) => {
@@ -106,7 +168,15 @@ export function AttendanceProvider({ children }: { children: ReactNode }) {
 
   return (
     <AttendanceContext.Provider
-      value={{ records, todayRecord, clockIn, clockOut, getRecordsForMonth }}
+      value={{
+        records,
+        todayRecord,
+        isLoading,
+        clockIn,
+        clockOut,
+        getRecordsForMonth,
+        refreshRecords,
+      }}
     >
       {children}
     </AttendanceContext.Provider>

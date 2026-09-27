@@ -33,7 +33,7 @@
     },
     {
       "name": "workingMinutes",
-      "type": "Number",
+      "type": "String",
       "isArray": false,
       "isRequired": false,
       "description": "Calculated working minutes for the shift"
