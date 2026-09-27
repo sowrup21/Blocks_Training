@@ -1,0 +1,15 @@
+{
+  "name": "clockwise-app",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "clockwise"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=clockwise",
+    "start": "npx serve -s clockwise/dist -l 3000"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  }
+}

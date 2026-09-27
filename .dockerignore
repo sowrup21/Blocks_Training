@@ -1,0 +1,7 @@
+node_modules
+clockwise/node_modules
+clockwise/dist
+.git
+.agents
+.claude
+*.log
