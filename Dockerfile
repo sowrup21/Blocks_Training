@@ -8,7 +8,7 @@ COPY package.json ./
 COPY clockwise/package*.json ./clockwise/
 
 # Install dependencies
-RUN cd clockwise && npm ci --legacy-peer-deps || npm install
+RUN cd clockwise && (npm ci --legacy-peer-deps || npm install)
 
 # Copy clockwise source code
 COPY clockwise/ ./clockwise/
@@ -25,6 +25,6 @@ COPY --from=builder /app/clockwise/dist /usr/share/nginx/html
 # Copy Nginx SPA configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 80 3000 8080
 
 CMD ["nginx", "-g", "daemon off;"]
