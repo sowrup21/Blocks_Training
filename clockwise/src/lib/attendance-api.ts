@@ -86,8 +86,13 @@ export async function createAttendanceRecord(
       itemId?: string;
     };
 
-    const createdItem = res.data?.insertAttendance;
-    const itemId = createdItem?.ItemId || createdItem?.id || res.ItemId || res.itemId;
+    const createdItem = res.data?.insertAttendance as Record<string, unknown> | undefined;
+    const itemId =
+      (createdItem?.itemId as string) ||
+      (createdItem?.ItemId as string) ||
+      (createdItem?.id as string) ||
+      res.ItemId ||
+      res.itemId;
 
     return {
       ...record,
